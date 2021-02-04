@@ -23,7 +23,7 @@ jobs:
           author_email: changelog-bot@opositatest.com
           branch: ${BRANCH_NAME}
           message: 'Update CHANGELOG'
-          pull_strategy: '--no-rebase or --no-ff'
+          # pull_strategy: '--no-rebase or --no-ff'
           push: true
           signoff: true
           tag: 'v1.0.0 --force'

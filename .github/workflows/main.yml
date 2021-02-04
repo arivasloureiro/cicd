@@ -11,11 +11,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      
-      - name: Run a multi-line script
+
+      - name: Changelog format
         run: |
-          git status
-          touch newfile
-          git status
-          git add
-          gh pr status
+          echo "[FEATURE] awesome feature > CHANGELOG.md"
+   
+      - uses: EndBug/add-and-commit@v7 # You can change this to use a specific version
+        with:
+          add: 'CHANGELOG.md'
+          author_name: Changelog Bot
+          author_email: changelog-bot@opositatest.com
+          branch: main
+          message: 'Update CHANGELOG'
+          pull_strategy: '--no-rebase or --no-ff or --rebase'
+          push: true
+          signoff: true
+          tag: 'v1.0.0 --force'

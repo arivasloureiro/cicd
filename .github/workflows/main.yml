@@ -15,7 +15,7 @@ jobs:
       - name: Changelog format
         run: |
           # echo "[FEATURE] awesome feature" > CHANGELOG.md
-          python -c 'print("ddd")'
+          env
    
       #- uses: EndBug/add-and-commit@v7 # You can change this to use a specific version
       #  with:

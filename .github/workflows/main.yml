@@ -28,13 +28,15 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: echo "Uploading ..."
       
-      - uses: 8BitJonny/gh-get-current-pr@1.0.1
-        id: PR
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          filterOutClosed: true
-      - run: echo "Your PR is ${prNumber} and its JSON is ${prJSON}"
-        if: success() && steps.PR.outputs.number
+      - name: Get title pull request
+        run: curl -s "https://api.github.com/repos/arivasloureiro/cicd/pulls/${my_var}" | jq -r '.title'
         env:
-          prNumber: ${{ steps.PR.outputs.number }}
-          prJSON: ${{ steps.PR.outputs.pr }}
+          my_var: ${{github.event.number}}
+      
+      - name: get commit message
+        if: github.ref == 'refs/heads/main'
+        run: |
+            echo ::set-env name=commitmsg::$(git log --format=%B -n 1 ${{ github.event.after }})
+      
+      - name: show commit message
+        run : echo $commitmsg

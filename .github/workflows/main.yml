@@ -17,6 +17,12 @@ jobs:
           echo "Finish test"
           echo ${CHECK_MASTER}
 
+      - name: Merge !!
+        run: |
+            echo "Merge !!!"
+            echo ${{ github.event.pull_request.merged }}
+
+
       - name: Test2
         run: echo "More test"
 
@@ -26,7 +32,9 @@ jobs:
 
       - name: Upload image
         if: github.ref == 'refs/heads/main'
-        run: echo "Uploading ..."
+        run: | 
+          echo "Uploading ..."
+          echo github.event.pull_request.merged
       
       - name: get commit message
         if: github.event.pull_request.merged == true

@@ -45,7 +45,7 @@ jobs:
       
       - name: get commit message
         if: |
-          (contains(${{ PR_TITLE }}, 'Merge pull request #')) && (github.ref == 'refs/heads/main')
+          (contains(${{ env.PR_TITLE }}, 'Merge pull request #')) && (github.ref == 'refs/heads/main')
         run: |
           echo "${PR_TITLE} [#${PR_NUM}](${PR_URL})"
         env:

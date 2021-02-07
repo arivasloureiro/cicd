@@ -25,7 +25,7 @@ jobs:
         run: echo "More test"
 
       - name: Building image
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: github.ref == 'refs/heads/main'
         run: echo "Finish building"
 
       - name: Upload image

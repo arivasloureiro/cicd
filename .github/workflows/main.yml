@@ -16,6 +16,8 @@ jobs:
         id: findPr
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: prueba
+        run: echo "prueba"
       # This will echo "Your PR is 7", or be skipped if there is no current PR.
       - run: echo "Your PR is ${PR}"
         env:

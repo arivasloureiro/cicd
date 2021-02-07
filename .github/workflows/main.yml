@@ -9,15 +9,22 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+          PR_URL: ${{ github.event.pull_request._links.html.href }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          GITHUB_CONTEXT: ${{ toJson(github) }}
     steps:
       - uses: actions/checkout@v2
 
       - name: Dump github context
-        run:   echo "$GITHUB_CONTEXT"
+        run:   |
+          echo "$TITLE $URL"
+          echo $GITHUB_CONTEXT
         shell: bash
         env:
-          GITHUB_CONTEXT: ${{ toJson(github.job) }}
-
+          URL: ${{ github.event.pull_request._links.html.href }}
+          TITLE: ${{ github.event.pull_request.title }}
+          GITHUB_CONTEXT: ${{ toJson(github) }}
 
       - name: Test
         run: |
@@ -38,9 +45,9 @@ jobs:
       
       - name: get commit message
         if: |
-          (contains(github.event.head_commit.message, 'Merge pull request #')) && (github.ref == 'refs/heads/main')
+          contains(${{ env.PR_TITLE }}, 'Merge pull request #') && (github.ref == 'refs/heads/main')
         run: |
-          echo "${MESSAGE} [#${PR_NUM}](${GITHUB_SERVER_URL}/opositatest/${REPO}/pull/${PR_NUM})"
+          echo "${PR_TITLE} [#${PR_NUM}](${PR_URL})"
         env:
           MESSAGE: ${{ github.event.head_commit.message }}
           REPO: ${{ github.event.repository.name }}

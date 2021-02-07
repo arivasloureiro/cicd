@@ -38,5 +38,7 @@ jobs:
         run: |
             echo $(git log --format=%B -n 1 ${{ github.event.after }})
             echo ${{ github.event.base_ref }}
+            echo ${base}
         env:
           number: ${{ github.event.number }}
+          base: ${{ github.event.base_ref }}

@@ -28,11 +28,13 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: echo "Uploading ..."
       
-      - uses: jwalton/gh-find-current-pr@v1
-        id: findPr
+      - uses: 8BitJonny/gh-get-current-pr@v1
+        id: PR
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      # This will echo "Your PR is 7", or be skipped if there is no current PR.
-      - run: echo "Your PR is ${PR}"
+          filterOutClosed: true
+      - run: echo "Your PR is ${prNumber} and its JSON is ${prJSON}"
+        if: success() && steps.PR.outputs.number
         env:
-          PR: ${{ steps.findPr.outputs.pr }}
+          prNumber: ${{ steps.PR.outputs.number }}
+          prJSON: ${{ steps.PR.outputs.pr }

@@ -37,6 +37,6 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
             echo $(git log --format=%B -n 1 ${{ github.event.after }})
-            echo ${{ github.event.pull_request.base.ref }}
+            echo ${{ github.event.base_ref }}
         env:
           number: ${{ github.event.number }}

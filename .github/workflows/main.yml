@@ -17,8 +17,8 @@ jobs:
           echo "Finish test"
           echo ${CHECK_MASTER}
 
-      - name: 
-        if: "!contains(github.event.head_commit.message, 'Merge pull request #')"
+      - name: If contains
+        if: "contains(github.event.head_commit.message, 'Merge pull request #')"
         run: echo ${{ github.event.head_commit.message }}
 
 

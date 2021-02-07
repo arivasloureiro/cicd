@@ -25,9 +25,9 @@ jobs:
         run: echo "More test"
 
       - name: Building image
-        if: ${{ env.CHECK_MASTER }} == true
+        if: ${{ env.CHECK_MASTER }}
         run: echo "Finish building"
 
       - name: Upload image
-        if: ${{ env.CHECK_MASTER }} == true
+        if: ${{ env.CHECK_MASTER }}
         run: echo "Uploading ..."

@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      CHECK_MASTER: ${{ github.ref == 'refs/heads/master' }}
+      CHECK_MASTER: ${{ github.ref == 'refs/heads/main' }}
 
     steps:
       - uses: actions/checkout@v2

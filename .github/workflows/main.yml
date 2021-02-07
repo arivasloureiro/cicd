@@ -12,6 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Dump github context
+        run:   echo "$GITHUB_CONTEXT"
+        shell: bash
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+
+
       - name: Test
         run: |
           echo "Running test ..."

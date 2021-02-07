@@ -11,6 +11,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Test
+        run: |
+          echo "Running test ..."
+          echo "Finish test"
+          echo ${CHECK_MASTER}
 
-      - name: command
-        run: ls -altr
+      - name: Test2
+        run: echo "More test"
+
+      - name: Building image
+        if: github.ref == 'refs/heads/main'
+        run: echo "Finish building"
+
+      - name: Upload image
+        if: github.ref == 'refs/heads/main'
+        run: echo "Uploading ..."
+      
+      - uses: jwalton/gh-find-current-pr@v1
+        id: findPr
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      # This will echo "Your PR is 7", or be skipped if there is no current PR.
+      - run: echo "Your PR is ${PR}"
+        env:
+          PR: ${{ steps.findPr.outputs.pr }}

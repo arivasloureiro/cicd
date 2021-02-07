@@ -19,6 +19,7 @@ jobs:
         run: |
           echo "Running test ..."
           echo "Finish test"
+          echo ${CHECK_MASTER}
 
       - name: Test2
         run: echo "More test"

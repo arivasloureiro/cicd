@@ -51,7 +51,7 @@ jobs:
           VERSION: ${{ steps.date.outputs.vdate }}
 
       - uses: EndBug/add-and-commit@v7
-         if: |
+        if: |
           github.event.pull_request.merge_commit_sha == null
           && github.ref == 'refs/heads/main'
         with:

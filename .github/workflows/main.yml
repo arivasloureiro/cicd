@@ -42,17 +42,13 @@ jobs:
           echo "Uploading ..."
       
       - name: get commit message
-        if: |
-          github.event.pull_request.merge_commit_sha == null
-          && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         run: |
-          sed -i "1i* v1.0 ($(date +'%Y-%m-%d'))" CHANGELOG.md
-          sed -i "1i\\t* ${PR_TITLE} [#${PR_NUM}](${PR_URL})\n" CHANGELOG.md
+          sed -i "1i * v1.0 ($(date +'%Y-%m-%d'))" CHANGELOG.md
+          sed -i "1i \\\t* ${PR_TITLE} [#${PR_NUM}](${PR_URL})\n" CHANGELOG.md
 
       - uses: EndBug/add-and-commit@v7
-        if: |
-          github.event.pull_request.merge_commit_sha == null
-          && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         with:
           add: 'CHANGELOG.md'
           author_name: Changelog Bot

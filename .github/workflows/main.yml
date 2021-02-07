@@ -28,12 +28,5 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: echo "Uploading ..."
       
-      - uses: 8BitJonny/gh-get-current-pr@1.0.1
-        id: PR
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          filterOutClosed: true
-      - run: echo "Your PR is ${prNumber} and its JSON is ${prJSON}"
-        env:
-          prNumber: ${{ steps.PR.outputs.number }}
-          prJSON: ${{ steps.PR.outputs.pr }}
+      - name: Test
+        run echo ${github.event.number}

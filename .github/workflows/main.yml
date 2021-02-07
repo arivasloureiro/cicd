@@ -9,8 +9,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      vdate: ${{ steps.date.outputs.vdate }}
+      
     steps:
       - uses: actions/checkout@v2
+
+      - name: Calver
+        if: ${{ env.CHECK_MASTER }} == 'true'
+        run: echo "::set-output name=vdate::$(date +'%Y.%m.%d.%H%M')"
+        id: date
 
       - name: Test
         run: |
@@ -31,11 +39,27 @@ jobs:
       
       - name: get commit message
         if: |
-          github.event.pull_request.merge_commit_sha != null
+          github.event.pull_request.merge_commit_sha == null
           && github.ref == 'refs/heads/main'
         run: |
-          echo "${PR_TITLE} [#${PR_NUM}](${PR_URL})"
+          sed -i "1i* ${VERSION} ($(date +'%Y-%m-%d')) CHANGELOG.md
+          sed -i "1i\\t* ${PR_TITLE} [#${PR_NUM}](${PR_URL})\n" CHANGELOG.md
         env:
           PR_URL: ${{ github.event.pull_request._links.html.href }}
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_NUM: ${{ github.event.number }}
+          VERSION: ${{ steps.date.outputs.vdate }}
+
+      - uses: EndBug/add-and-commit@v7
+         if: |
+          github.event.pull_request.merge_commit_sha == null
+          && github.ref == 'refs/heads/main'
+        with:
+          add: 'CHANGELOG.md'
+          author_name: Changelog Bot
+          author_email: changelog-bot@opositatest.com
+          # branch: main
+          message: 'Update CHANGELOG'
+          push: true
+          signoff: true
+          tag: ${{ steps.date.outputs.vdate }}

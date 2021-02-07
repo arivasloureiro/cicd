@@ -12,10 +12,28 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      - name: Run a multi-line script
+      - name: Test
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          echo "Running test ..."
+          echo "Finish test"
+          echo ${CHECK_MASTER}
+
+      - name: Test2
+        run: echo "More test"
+
+      - name: Building image
+        if: github.ref == 'refs/heads/main'
+        run: echo "Finish building"
+
+      - name: Upload image
+        if: github.ref == 'refs/heads/main'
+        run: echo "Uploading ..."
+      
+      - uses: jwalton/gh-find-current-pr@v1
+        id: findPr
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      # This will echo "Your PR is 7", or be skipped if there is no current PR.
+      - run: echo "Your PR is ${PR}"
+        env:
+          PR: ${{ steps.findPr.outputs.pr }}

@@ -11,7 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       vdate: ${{ steps.date.outputs.vdate }}
-      
+    env:
+      PR_URL: ${{ github.event.pull_request._links.html.href }}
+      PR_TITLE: ${{ github.event.pull_request.title }}
+      PR_NUM: ${{ github.event.number }}
+  
     steps:
       - uses: actions/checkout@v2
 
@@ -44,10 +48,7 @@ jobs:
         run: |
           sed -i "1i* v1.0 ($(date +'%Y-%m-%d'))" CHANGELOG.md
           sed -i "1i\\t* ${PR_TITLE} [#${PR_NUM}](${PR_URL})\n" CHANGELOG.md
-        env:
-          PR_URL: ${{ github.event.pull_request._links.html.href }}
-          PR_TITLE: ${{ github.event.pull_request.title }}
-          PR_NUM: ${{ github.event.number }}
+
       - uses: EndBug/add-and-commit@v7
         if: |
           github.event.pull_request.merge_commit_sha == null

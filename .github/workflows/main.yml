@@ -17,6 +17,11 @@ jobs:
           echo "Finish test"
           echo ${CHECK_MASTER}
 
+      - name: get commit message
+        run: |
+            echo ${{ github.event.pull_request.merged }}
+
+
       - name: Test2
         run: echo "More test"
 

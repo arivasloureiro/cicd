@@ -14,7 +14,7 @@ with open(sys.argv[1]) as f:
     first_occur = next(x for x in f.read().split('\n') if re.findall('v\\d+\\.\\d+\\.\\d+ ', x))
     last_value = re.sub('(^.*v|\\s+\\(.*\\).*$)', '', first_occur).split('.')
 
-if len(sys.argv) > 3:
+if len(sys.argv) > 2:
     print(up_number(last_value, sys.argv[2]))
 else:
     print(up_number(last_value))

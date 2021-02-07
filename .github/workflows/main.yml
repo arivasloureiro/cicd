@@ -9,22 +9,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CHECK_MASTER: ${{ github.ref == 'refs/heads/master' }}
+
     steps:
       - uses: actions/checkout@v2
 
-      - name: Changelog format
+      - name: Test
         run: |
-          # echo "[FEATURE] awesome feature" > CHANGELOG.md
-          env
-   
-      #- uses: EndBug/add-and-commit@v7 # You can change this to use a specific version
-      #  with:
-      #    add: 'CHANGELOG.md'
-      #    author_name: Changelog Bot
-      #    author_email: changelog-bot@opositatest.com
-      #    # branch: main
-      #    message: 'Update CHANGELOG'
-      #    # pull_strategy: '--no-rebase or --no-ff'
-      #    push: true
-      #    signoff: true
-      #    tag: 'v1.0.0 --force'
+          echo "Running test ..."
+          echo "Finish test"
+
+      - name: Test2
+        run: echo "More test"
+
+      - name: Building image
+        if: ${{ env.CHECK_MASTER }} == 'true'
+        run: echo "Finish building"
+
+      - name: Upload image
+        if: ${{ env.CHECK_MASTER }} == 'true'
+        run: echo "Uploading ..."

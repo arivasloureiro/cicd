@@ -31,4 +31,4 @@ jobs:
       - name: Test
         run: echo ${my_var}
         env:
-          my_var: ${{github.event.number}}
+          my_var: ${{github.event.title}}

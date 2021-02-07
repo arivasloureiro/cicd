@@ -29,5 +29,5 @@ jobs:
         run: echo "Finish building"
 
       - name: Upload image
-        if: ${{ env.CHECK_MASTER }}
+        if: github.ref == 'refs/heads/main'
         run: echo "Uploading ..."

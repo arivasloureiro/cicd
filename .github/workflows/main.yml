@@ -42,7 +42,7 @@ jobs:
           github.event.pull_request.merge_commit_sha == null
           && github.ref == 'refs/heads/main'
         run: |
-          sed -i "1i* ${VERSION} ($(date +'%Y-%m-%d')) CHANGELOG.md
+          sed -i "1i* ${VERSION} ($(date +'%Y-%m-%d'))" CHANGELOG.md
           sed -i "1i\\t* ${PR_TITLE} [#${PR_NUM}](${PR_URL})\n" CHANGELOG.md
         env:
           PR_URL: ${{ github.event.pull_request._links.html.href }}

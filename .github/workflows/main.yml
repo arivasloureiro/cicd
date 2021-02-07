@@ -34,11 +34,7 @@ jobs:
           my_var: ${{github.event.number}}
       
       - name: get commit message
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' and github.event.pull_request.merged == true
         run: |
             echo $(git log --format=%B -n 1 ${{ github.event.after }})
-            echo ${{ github.event.base_ref }}
             echo ${{ github.event.after }}
-        env:
-          number: ${{ github.event.number }}
-          base: ${{ github.event.base_ref }}

@@ -28,11 +28,6 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: echo "Uploading ..."
       
-      - name: Get title pull request
-        run: curl -s "https://api.github.com/repos/arivasloureiro/cicd/pulls/${my_var}" | jq -r '.title'
-        env:
-          my_var: ${{github.event.number}}
-      
       - name: get commit message
         if: github.event.pull_request.merged == true
         run: |

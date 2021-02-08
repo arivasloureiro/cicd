@@ -9,27 +9,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      PR_URL: ${{ github.event.pull_request._links.html.href }}
-      PR_TITLE: ${{ github.event.pull_request.title }}
-      PR_NUM: ${{ github.event.number }}
-      GITHUB_CONTEXT: ${{ toJson(github) }}
-  
+    env:  
     steps:
       - uses: actions/checkout@v2
 
-      - name: Github context
-        run: |
-          echo "${GITHUB_SERVER_URL}/${REPO}/pull/${PR_NUM}"
-          echo "$PR_URL $PR_TITLE $PR_NUM"
-        env:
-          MESSAGE: ${{ github.event.head_commit.message }}
-          REPO: ${{ github.repository }}
-          PR_NUM: ${{ github.event.number }}
-      #- name: Calver
-      #  if: ${{ env.CHECK_MASTER }} == 'true'
-      #  run: echo "::set-output name=vdate::$(date +'%Y.%m.%d.%H%M')"
-      #  id: date
+      - name: Calver
+        if: ${{ env.CHECK_MASTER }} == 'true'
+        run: echo "::set-output name=vdate::$(date +'%Y.%m.%d.%H%M')"
+        id: date
 
       - name: Test
         run: |
@@ -47,13 +34,15 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: | 
           echo "Uploading ..."
-      
-     # - name: get commit message
-     #   if: github.ref == 'refs/heads/main'
-     #   run: |
-     #     sed -i "1i * v1.0 ($(date +'%Y-%m-%d'))" CHANGELOG.md
-     #     sed -i "1i \\\t* ${PR_TITLE} [#${PR_NUM}](${PR_URL})\n" CHANGELOG.md
-#
+
+      - name: get commit message
+        run: |
+          v="true"
+          if [[ $v1 == "true" ]];then
+            echo "Es true"
+          else
+            echo "No es true"
+          fi
      # - uses: EndBug/add-and-commit@v7
      #   if: github.ref == 'refs/heads/main'
      #   with:

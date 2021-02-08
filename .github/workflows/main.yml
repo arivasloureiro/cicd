@@ -20,7 +20,7 @@ jobs:
 
       - name: Github context
         run: |
-          echo "{GITHUB_SERVER_URL}/${REPO}/pull/${PR_NUM}"
+          echo "${GITHUB_SERVER_URL}/${REPO}/pull/${PR_NUM}"
           echo "$PR_URL $PR_TITLE $PR_NUM"
         env:
           MESSAGE: ${{ github.event.head_commit.message }}

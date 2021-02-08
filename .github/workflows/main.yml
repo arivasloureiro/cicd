@@ -14,9 +14,9 @@ jobs:
 
       - name: get commit message
         run: |
-          my_print()\\{
+          my_print(){
             echo $1
-          \\}
+          }
 
           v1="true"
           if [[ $v1 == "true" ]];then

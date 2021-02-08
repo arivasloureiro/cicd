@@ -14,9 +14,13 @@ jobs:
 
       - name: get commit message
         run: |
-          v="true"
+        my_print(){
+          echo $1
+        }
+
+          v1="true"
           if [[ $v1 == "true" ]];then
-            echo "Es true"
+            my_print ddddd
           else
             echo "No es true"
           fi

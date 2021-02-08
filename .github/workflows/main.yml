@@ -20,7 +20,12 @@ jobs:
 
       - name: Github context
         run: |
+          echo "{GITHUB_SERVER_URL}/${REPO}/pull/${PR_NUM})""
           echo "$PR_URL $PR_TITLE $PR_NUM"
+        env:
+          MESSAGE: ${{ github.event.head_commit.message }}
+          REPO: ${{ github.repository }}
+          PR_NUM: ${{ github.event.number }}
       #- name: Calver
       #  if: ${{ env.CHECK_MASTER }} == 'true'
       #  run: echo "::set-output name=vdate::$(date +'%Y.%m.%d.%H%M')"

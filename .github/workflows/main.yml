@@ -9,20 +9,22 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      vdate: ${{ steps.date.outputs.vdate }}
     env:
       PR_URL: ${{ github.event.pull_request._links.html.href }}
       PR_TITLE: ${{ github.event.pull_request.title }}
       PR_NUM: ${{ github.event.number }}
+      GITHUB_CONTEXT: ${{ toJson(github) }}
   
     steps:
       - uses: actions/checkout@v2
 
-      - name: Calver
-        if: ${{ env.CHECK_MASTER }} == 'true'
-        run: echo "::set-output name=vdate::$(date +'%Y.%m.%d.%H%M')"
-        id: date
+      - name: Github context
+        run: |
+          echo "$PR_URL $PR_TITLE $PR_NUM"
+      #- name: Calver
+      #  if: ${{ env.CHECK_MASTER }} == 'true'
+      #  run: echo "::set-output name=vdate::$(date +'%Y.%m.%d.%H%M')"
+      #  id: date
 
       - name: Test
         run: |
@@ -41,20 +43,20 @@ jobs:
         run: | 
           echo "Uploading ..."
       
-      - name: get commit message
-        if: github.ref == 'refs/heads/main'
-        run: |
-          sed -i "1i * v1.0 ($(date +'%Y-%m-%d'))" CHANGELOG.md
-          sed -i "1i \\\t* ${PR_TITLE} [#${PR_NUM}](${PR_URL})\n" CHANGELOG.md
-
-      - uses: EndBug/add-and-commit@v7
-        if: github.ref == 'refs/heads/main'
-        with:
-          add: 'CHANGELOG.md'
-          author_name: Changelog Bot
-          author_email: changelog-bot@opositatest.com
-          # branch: main
-          message: 'Update CHANGELOG'
-          push: true
-          signoff: true
-          tag: ${{ steps.date.outputs.vdate }}
+     # - name: get commit message
+     #   if: github.ref == 'refs/heads/main'
+     #   run: |
+     #     sed -i "1i * v1.0 ($(date +'%Y-%m-%d'))" CHANGELOG.md
+     #     sed -i "1i \\\t* ${PR_TITLE} [#${PR_NUM}](${PR_URL})\n" CHANGELOG.md
+#
+     # - uses: EndBug/add-and-commit@v7
+     #   if: github.ref == 'refs/heads/main'
+     #   with:
+     #     add: 'CHANGELOG.md'
+     #     author_name: Changelog Bot
+     #     author_email: changelog-bot@opositatest.com
+     #     # branch: main
+     #     message: 'Update CHANGELOG'
+     #     push: true
+     #     signoff: true
+     #     tag: ${{ steps.date.outputs.vdate }}

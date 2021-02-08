@@ -9,31 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:  
     steps:
       - uses: actions/checkout@v2
-
-      - name: Calver
-        if: ${{ env.CHECK_MASTER }} == 'true'
-        run: echo "::set-output name=vdate::$(date +'%Y.%m.%d.%H%M')"
-        id: date
-
-      - name: Test
-        run: |
-          echo "Running test ..."
-          echo "Finish test"
-
-      - name: Test2
-        run: echo "More test"
-
-      - name: Building image
-        if: github.ref == 'refs/heads/main'
-        run: echo "Finish building"
-
-      - name: Upload image
-        if: github.ref == 'refs/heads/main'
-        run: | 
-          echo "Uploading ..."
 
       - name: get commit message
         run: |
@@ -43,14 +20,3 @@ jobs:
           else
             echo "No es true"
           fi
-     # - uses: EndBug/add-and-commit@v7
-     #   if: github.ref == 'refs/heads/main'
-     #   with:
-     #     add: 'CHANGELOG.md'
-     #     author_name: Changelog Bot
-     #     author_email: changelog-bot@opositatest.com
-     #     # branch: main
-     #     message: 'Update CHANGELOG'
-     #     push: true
-     #     signoff: true
-     #     tag: ${{ steps.date.outputs.vdate }}

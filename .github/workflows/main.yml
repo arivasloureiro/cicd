@@ -48,8 +48,7 @@ jobs:
         env:
           VERSION: ${{ steps.date.outputs.version }}
           MESSAGE: ${{ github.event.head_commit.message }}
-          REPO: ${{ github.event.repository }}
-          PR_NUM: ${{ github.event.number }}
+          REPO: ${{ github.repository }}
 
       - name: Commit CHANGELOG
         if: github.ref == 'refs/heads/main'

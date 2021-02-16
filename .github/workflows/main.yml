@@ -25,10 +25,12 @@ jobs:
 
       # Only main branch
       - name: Get new version (Calversion)
+        if: github.ref == 'refs/heads/main'
         run: echo "::set-output name=version::$(date +'%Y.%m.%d.%H%M')"
         id: date
 
       - name: Update CHANGELOG
+        if: github.ref == 'refs/heads/main'
         id: update-changelog
         run: |
           if [[ ${MESSAGE} =~ ^'Merge pull request #' ]];then
@@ -50,6 +52,7 @@ jobs:
           PR_NUM: ${{ github.event.number }}
 
       - name: Commit CHANGELOG
+        if: github.ref == 'refs/heads/main'
         uses: EndBug/add-and-commit@v7
         with:
           add: ${{ steps.update-changelog.outputs.changelog }}

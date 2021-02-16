@@ -1,26 +1,63 @@
-name: CI
+name: CICD
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
 
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: Ubuntu-20.04
+    env:
+      APP_ENV: test
+    outputs:
+      image_tag: ${{ steps.build-image.outputs.tag }}
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Cloning repository
+        uses: actions/checkout@v2
+        
+      - name: Run test
+        run: echo "Running test ..."
 
-      - name: get commit message
+      # Only main branch
+      - name: Get new version (Calversion)
+        run: echo "::set-output name=version::$(date +'%Y.%m.%d.%H%M')"
+        id: date
+
+      - name: Update CHANGELOG
+        id: update-changelog
         run: |
-          my_print(){
-            echo $1
-          }
-
-          v1="true"
-          if [[ $v1 == "true" ]];then
-            my_print ddddd
+          if [[ ${MESSAGE} =~ ^Merge pull request # ]];then
+            pr_num=$(head -1 <<< "$MESSAGE" | awk '{ gsub("#","",$4 ); print $4 }')
+            message=$(sed '1,3d' <<< "${MESSAGE}")
+            message="${message} [#${pr_num}](${GITHUB_SERVER_URL})"
           else
-            echo "No es true"
+            message="${MESSAGE}"
           fi
+
+          file="CHANGELOG-$(date "+%Y").md"
+          [[ ! -f ${file} ]] && touch ${file}
+
+          message="\* $VERSION ($(date +'%Y-%m-%d'))\n\t* ${message}\n\n"
+          sed "1i ${message}" ${file}
+          echo "::set-output name=changelog::${file}"
+        env:
+          VERSION: ${{ steps.date.outputs.version }}
+          MESSAGE: ${{ github.event.head_commit.message }}
+          REPO: ${{ github.event.repository.name }}
+          PR_NUM: ${{ github.event.number }}
+
+      - name: Commit CHANGELOG
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: ${{ steps.update-changelog.outputs.changelog }}
+          author_name: Changelog Bot
+          author_email: changelog-bot@opositatest.com
+          message: 'Update CHANGELOG'
+          push: true
+          signoff: true
+          tag: ${{ steps.date.outputs.version }}

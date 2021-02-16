@@ -41,7 +41,7 @@ jobs:
           file="CHANGELOG-$(date "+%Y").md"
           [[ ! -f ${file} ]] && touch ${file}
 
-          message="* $VERSION ($(date +'%Y-%m-%d'))\n\t* ${message}\n"
+          message="* $VERSION ($(date +'%Y-%m-%d'))\n\t* ${message}\n\n"
           echo -e "${message}"$(cat ${file}) > ${file}
           echo "::set-output name=changelog::${file}"
         env:

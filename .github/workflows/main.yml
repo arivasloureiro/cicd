@@ -37,12 +37,11 @@ jobs:
           else
             message="${MESSAGE}"
           fi
-
+          
           file="CHANGELOG-$(date "+%Y").md"
           [[ ! -f ${file} ]] && touch ${file}
-
-          message="* $VERSION ($(date +'%Y-%m-%d'))\n\t* ${message}\n\n"
-          echo -e "${message}"$(cat ${file}) > ${file}
+          message="* $VERSION ($(date +'%Y-%m-%d'))\n    * ${message}\n\n"
+          echo -e "${message}$(cat ${file})" > ${file}
           echo "::set-output name=changelog::${file}"
         env:
           VERSION: ${{ steps.date.outputs.version }}

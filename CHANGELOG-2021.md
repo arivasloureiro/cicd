@@ -1,3 +1,6 @@
+* 2021.02.16.2225 (2021-02-16)
+    * [HOTFIX] This bug was fixed [#21](https://github.com/arivasloureiro/cicd/pull/21)
+
 * 2021.02.16.2223 (2021-02-16)
     * test
 

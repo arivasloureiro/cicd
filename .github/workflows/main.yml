@@ -35,7 +35,7 @@ jobs:
         run: |
           if [[ ${MESSAGE} =~ ^'Merge pull request #' ]];then
             pr_num=$(head -1 <<< "$MESSAGE" | awk '{ gsub("#","",$4 ); print $4 }')
-            message="$(sed '1,3d' <<< "${MESSAGE}")[#${pr_num}](${GITHUB_SERVER_URL})"
+            message="$(sed '1,3d' <<< ${MESSAGE})[#${pr_num}](${GITHUB_SERVER_URL}/${REPO}/$pr_num)"
           else
             message="${MESSAGE}"
           fi

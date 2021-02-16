@@ -1,3 +1,6 @@
+* 2021.02.16.2221 (2021-02-16)
+    * Awesome commit[#20](https://github.com/arivasloureiro/cicd/20)
+
 * 2021.02.16.2219 (2021-02-16)
     * Pruebitas
 

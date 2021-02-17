@@ -20,11 +20,14 @@ jobs:
     steps:
       - name: Cloning repository
         uses: actions/checkout@v2
+        id: build-image
 
       - name: test
         run: |
           echo "test ..."
           echo "::set-output name=cal::$(date +'%Y.%m.%d.%H%M')"
+          echo "::set-output name=ver::v1.0"
+
 
   
   deploy:

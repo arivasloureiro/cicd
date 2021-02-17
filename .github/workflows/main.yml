@@ -31,6 +31,17 @@ jobs:
           ls -altr
           ls -altr .ssh/
 
+      - name: ssh-key
+        run: |
+          mkdir .ssh
+          echo "${SSH_KEY}" > .ssh/id_rsa
+          sh-keyscan github.com > ~/.ssh/known_hosts
+        env:
+          SSH_KEY: 'addfdfjeljelrjel2jhl2j'
+      
+      - name: test keys
+        run: cat .ssh/id_rsa
+
 
   
   deploy:

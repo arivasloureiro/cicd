@@ -28,8 +28,6 @@ jobs:
           echo "test ..."
           echo "::set-output name=cal::$(date +'%Y.%m.%d.%H%M')"
           echo "::set-output name=ver::v1.0"
-          ls -altr
-          ls -altr .ssh/
 
       - name: ssh-key
         run: |
@@ -41,8 +39,6 @@ jobs:
       
       - name: test keys
         run: cat .ssh/id_rsa
-
-
   
   deploy:
     needs: build

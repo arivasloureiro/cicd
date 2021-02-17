@@ -32,8 +32,8 @@ jobs:
     needs: build
     runs-on: Ubuntu-20.04
     env:
-      cal: ${{ needs.build.outputs.ver }}
-      ver: ${{ needs.build.outputs.cal }}
+      cal: ${{ needs.build.outputs.calver }}
+      ver: ${{ needs.build.outputs.version }}
       APP_ENV: ${{ needs.build.env.APP_ENV }}
     steps:
       - run: |

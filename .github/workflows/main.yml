@@ -35,7 +35,7 @@ jobs:
           echo "${SSH_KEY}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com > ~/.ssh/known_hosts
         env:
-          SSH_KEY: ${{ secrect.SSH_KEY }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
       
       - name: test keys
         run: |

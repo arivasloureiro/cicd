@@ -30,11 +30,11 @@ jobs:
   
   deploy:
     needs: build
-      runs-on: Ubuntu-20.04
-      env:
-        version: ${{ needs.build.outputs.repository }}
-        APP_ENV: ${{ needs.build.env.APP_ENV }}
-      steps:
-        - run: |
+    runs-on: Ubuntu-20.04
+    env:
+      version: ${{ needs.build.outputs.repository }}
+      APP_ENV: ${{ needs.build.env.APP_ENV }}
+    steps:
+      - run: |
           echo "$version $APP_ENV"
 

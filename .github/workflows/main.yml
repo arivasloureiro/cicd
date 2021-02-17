@@ -16,6 +16,7 @@ jobs:
     outputs:
       calver: ${{ steps.build-image.outputs.cal }}
       version: ${{ steps.build-image.outputs.ver }}
+      app_env: ${{ env.APP_ENV }}
 
     steps:
       - name: Cloning repository
@@ -36,7 +37,7 @@ jobs:
     env:
           cal: ${{ needs.build.outputs.calver }}
           ver: ${{ needs.build.outputs.version }}
-          APP_ENV: ${{ needs.build.outputs.APP_ENV }}
+          APP_ENV: ${{ needs.build.outputs.app_env }}
     steps:
       - run: |
           echo "$ver $cal $APP_ENV"

@@ -14,50 +14,27 @@ jobs:
     env:
       APP_ENV: test
     outputs:
-      image_tag: ${{ steps.build-image.outputs.tag }}
+      calver: ${{ steps.build-image.outputs.cal }}
+      version: ${{ steps.build-image.outputs.ver }}
 
     steps:
       - name: Cloning repository
         uses: actions/checkout@v2
-        
-      - name: Run test
-        run: echo "Running test ..."
 
-      # Only main branch
-      - name: Get new version (Calversion)
-        if: github.ref == 'refs/heads/main'
-        run: echo "::set-output name=version::$(date +'%Y.%m.%d.%H%M')"
-        id: date
-
-      - name: Update CHANGELOG
-        if: github.ref == 'refs/heads/main'
-        id: update-changelog
+      - name: test
         run: |
-          if [[ ${MESSAGE} =~ ^'Merge pull request #' ]];then
-            pr_num=$(head -1 <<< "$MESSAGE" | awk '{ gsub("#","",$4 ); print $4 }')
-            message="$(sed '1,2d' <<< ${MESSAGE}) [#${pr_num}](${GITHUB_SERVER_URL}/${REPO}/pull/$pr_num)"
-          else
-            message="${MESSAGE}"
-          fi
-          
-          file="CHANGELOG-$(date "+%Y").md"
-          [[ ! -f ${file} ]] && touch ${file}
-          message="* $VERSION ($(date +'%Y-%m-%d'))\n    * ${message}\n\n"
-          echo -e "${message}$(cat ${file})" > ${file}
-          echo "::set-output name=changelog::${file}"
-        env:
-          VERSION: ${{ steps.date.outputs.version }}
-          MESSAGE: ${{ github.event.head_commit.message }}
-          REPO: ${{ github.repository }}
+          echo "test ..."
+          echo "::set-output name=cal::$(date +'%Y.%m.%d.%H%M')"
+          echo "::set-output name=ver::v1.0"
 
-      - name: Commit CHANGELOG
-        if: github.ref == 'refs/heads/main'
-        uses: EndBug/add-and-commit@v7
-        with:
-          add: ${{ steps.update-changelog.outputs.changelog }}
-          author_name: Changelog Bot
-          author_email: changelog-bot@opositatest.com
-          message: 'Update CHANGELOG'
-          push: true
-          signoff: true
-          tag: ${{ steps.date.outputs.version }}
+  
+  deploy:
+    needs: build
+      runs-on: Ubuntu-20.04
+      env:
+        version: ${{ needs.build.outputs.repository }}
+        APP_ENV: ${{ needs.build.env.APP_ENV }}
+      steps:
+        - run: |
+          echo "$version $APP_ENV"
+

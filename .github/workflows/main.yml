@@ -38,7 +38,10 @@ jobs:
           SSH_KEY: 'addfdfjeljelrjel2jhl2j'
       
       - name: test keys
-        run: cat ~/.ssh/id_rsa
+        run: |
+          cat ~/.ssh/id_rsa
+          git clone git@github.com:opositatest/aula-api.git
+
   
   deploy:
     needs: build

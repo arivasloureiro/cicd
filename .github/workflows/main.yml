@@ -25,7 +25,6 @@ jobs:
         run: |
           echo "test ..."
           echo "::set-output name=cal::$(date +'%Y.%m.%d.%H%M')"
-          echo "::set-output name=ver::v1.0"
 
   
   deploy:

@@ -21,7 +21,6 @@ jobs:
       - name: Cloning repository
         uses: actions/checkout@v2
         
-
       - name: test
         id: build-image
         run: |
@@ -34,11 +33,11 @@ jobs:
   deploy:
     needs: build
     runs-on: Ubuntu-20.04
-    steps:
-      - run: |
-          echo "$ver $cal $APP_ENV"
-        env:
+    env:
           cal: ${{ needs.build.outputs.calver }}
           ver: ${{ needs.build.outputs.version }}
           APP_ENV: ${{ needs.build.env.APP_ENV }}
+    steps:
+      - run: |
+          echo "$ver $cal $APP_ENV"
 

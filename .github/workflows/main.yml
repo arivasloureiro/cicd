@@ -15,10 +15,8 @@ jobs:
       APP_ENV: test
       REGION: eu-west-1
     outputs:
-      calver: ${{ steps.build-image.outputs.cal }}
-      version: ${{ steps.build-image.outputs.ver }}
       app_env: ${{ env.APP_ENV }}
-      aws-region: ${{ env.REGION }}
+      aws_region: ${{ env.REGION }}
 
     steps:
       - name: Cloning repository
@@ -26,10 +24,7 @@ jobs:
         
       - name: test
         id: build-image
-        run: |
-          echo "test ..."
-          echo "::set-output name=cal::$(date +'%Y.%m.%d.%H%M')"
-          echo "::set-output name=ver::v1.0"
+        run: echo "test ..."
 
       # - name: ssh-key
       #   run: |
@@ -49,11 +44,10 @@ jobs:
     needs: build
     runs-on: Ubuntu-20.04
     env:
-          cal: ${{ needs.build.outputs.calver }}
-          ver: ${{ needs.build.outputs.version }}
-          APP_ENV: ${{ needs.build.outputs.app_env }}
-          REGION2: ${{ needs.build.outputs.aws-region }}
+      REGION2: ${{ needs.build.outputs.aws_region }}
+
     steps:
-      - run: |
-          echo  "$REGION2"
+      - run: echo  "$REGION2 $APP_ENV2"
+        env:
+          APP_ENV2: ${{ needs.build.outputs.app_env }}
 

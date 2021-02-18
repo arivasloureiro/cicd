@@ -13,10 +13,12 @@ jobs:
     runs-on: Ubuntu-20.04
     env:
       APP_ENV: test
+      REGION: eu-west-1
     outputs:
       calver: ${{ steps.build-image.outputs.cal }}
       version: ${{ steps.build-image.outputs.ver }}
       app_env: ${{ env.APP_ENV }}
+      aws-region: ${{ env.REGION }}
 
     steps:
       - name: Cloning repository
@@ -29,18 +31,18 @@ jobs:
           echo "::set-output name=cal::$(date +'%Y.%m.%d.%H%M')"
           echo "::set-output name=ver::v1.0"
 
-      - name: ssh-key
-        run: |
-          mkdir ~/.ssh
-          echo "${SSH_KEY}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com > ~/.ssh/known_hosts
-        env:
-          SSH_KEY: ${{ secrets.SSH_KEY }}
+      # - name: ssh-key
+      #   run: |
+      #     mkdir ~/.ssh
+      #     echo "${SSH_KEY}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+      #     ssh-keyscan github.com > ~/.ssh/known_hosts
+      #   env:
+      #     SSH_KEY: ${{ secrets.SSH_KEY }}
       
-      - name: test keys
-        run: |
-          cat ~/.ssh/id_rsa
-          git clone git@github.com:opositatest/aula-api.git
+      # - name: test keys
+      #   run: |
+      #     cat ~/.ssh/id_rsa
+      #     git clone git@github.com:opositatest/aula-api.git
 
   
   deploy:
@@ -50,7 +52,9 @@ jobs:
           cal: ${{ needs.build.outputs.calver }}
           ver: ${{ needs.build.outputs.version }}
           APP_ENV: ${{ needs.build.outputs.app_env }}
+          REGION2: ${{ needs.build.outputs.aws-region }}
     steps:
       - run: |
           echo "$ver $cal $APP_ENV"
+          echo "${needs.build.outputs.aws-region} $REGION2"
 

@@ -55,6 +55,5 @@ jobs:
           REGION2: ${{ needs.build.outputs.aws-region }}
     steps:
       - run: |
-          echo "$ver $cal $APP_ENV"
-          echo "${needs.build.outputs.aws-region} $REGION2"
+          echo  "$REGION2"
 

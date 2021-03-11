@@ -26,7 +26,6 @@ jobs:
     runs-on: Ubuntu-20.04
 
     steps:
-      - run: echo  "job 2"
       - run: echo "${process}"
       env:
         process: ${{ toJson(process) }}

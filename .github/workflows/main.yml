@@ -28,10 +28,19 @@ jobs:
     needs: build
     runs-on: Ubuntu-20.04
     steps:
+    - run: date +'%s'
 
-      - run: date +'%s'
+    - name: Get total time
+      id: total-time
+      run: |
+        date_diff=$( echo "($(date +'%s') - ${initial_timestamp})" | bc)
+        total_time="$date_diff seconds"
+        if (( $date_diff > 60 ));then
+          minutes=$(( ${date_diff} / 60 )) && seconds=$(( ${date_diff} % 60 ))
+          total_time="$minutes minutes and $seconds seconds"
+        fi
+        echo "::set-output name=total_time::${total_time}"
+      env:
+        initial_timestamp: ${{ needs.build.outputs.initial_timestamp }}
 
-      - run: echo "${GITHUB_CONTEXT2}"
-        env:
-          GITHUB_CONTEXT2: ${{ toJson(github) }}
 

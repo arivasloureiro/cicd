@@ -14,19 +14,24 @@ jobs:
     steps:
       - name: Cloning repository
         uses: actions/checkout@v2
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
+
+      - run: date +'%s'
         
       - name: test
         id: build-image
-        run: echo "test ..."
+        run: echo "$GITHUB_CONTEXT"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
 
   
   deploy:
     needs: build
     runs-on: Ubuntu-20.04
     steps:
-      - run: echo "${process}"
+
+      - run: date +'%s'
+
+      - run: echo "${GITHUB_CONTEXT2}"
         env:
-          process: ${{ toJson(process) }}
+          GITHUB_CONTEXT2: ${{ toJson(github) }}
 

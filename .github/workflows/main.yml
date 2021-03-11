@@ -5,18 +5,12 @@ on:
   pull_request:
     branches: [ main ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: Ubuntu-20.04
-    env:
-      APP_ENV: test
-      REGION: eu-west-1
-    outputs:
-      app_env: ${{ env.APP_ENV }}
-      aws_region: ${{ env.REGION }}
+    GITHUB_CONTEXT: ${{ toJson(github) }}
 
     steps:
       - name: Cloning repository
@@ -26,28 +20,14 @@ jobs:
         id: build-image
         run: echo "test ..."
 
-      # - name: ssh-key
-      #   run: |
-      #     mkdir ~/.ssh
-      #     echo "${SSH_KEY}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
-      #     ssh-keyscan github.com > ~/.ssh/known_hosts
-      #   env:
-      #     SSH_KEY: ${{ secrets.SSH_KEY }}
-      
-      # - name: test keys
-      #   run: |
-      #     cat ~/.ssh/id_rsa
-      #     git clone git@github.com:opositatest/aula-api.git
-
   
   deploy:
     needs: build
     runs-on: Ubuntu-20.04
-    env:
-      REGION2: ${{ needs.build.outputs.aws_region }}
 
     steps:
-      - run: echo  "$REGION2 $APP_ENV2"
-        env:
-          APP_ENV2: ${{ needs.build.outputs.app_env }}
+      - run: echo  "job 2"
+      - run: echo ${process}
+      env:
+        GITHUB_CONTEXT: ${{ toJson(process) }}
 

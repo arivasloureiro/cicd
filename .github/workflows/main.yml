@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - run: echo  "job 2"
-      - run: echo ${process}
+      - run: echo "${process}"
       env:
-        GITHUB_CONTEXT: ${{ toJson(process) }}
+        process: ${{ toJson(process) }}
 

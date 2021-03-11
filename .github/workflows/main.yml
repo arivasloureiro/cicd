@@ -10,11 +10,12 @@ on:
 jobs:
   build:
     runs-on: Ubuntu-20.04
-    GITHUB_CONTEXT: ${{ toJson(github) }}
 
     steps:
       - name: Cloning repository
         uses: actions/checkout@v2
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
         
       - name: test
         id: build-image

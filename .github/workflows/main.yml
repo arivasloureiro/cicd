@@ -24,9 +24,8 @@ jobs:
   deploy:
     needs: build
     runs-on: Ubuntu-20.04
-
     steps:
       - run: echo "${process}"
-      env:
-        process: ${{ toJson(process) }}
+        env:
+          process: ${{ toJson(process) }}
 
